@@ -13,33 +13,33 @@ import com.google.gson.JsonParser;
 
 public class WordDictionary {
 
-	private HashMap<String, ArrayList<WordNode>> wordList;
+	private HashMap<String, ArrayList<String>> wordList;
 	private int wordCount = 0;
 	
 	public WordDictionary() {
 		// TODO Auto-generated constructor stub
-		wordList = new HashMap<String, ArrayList<WordNode>>();
+		wordList = new HashMap<String, ArrayList<String>>();
 	}
 
 
-	public HashMap<String, ArrayList<WordNode>> getWordList() {
+	public HashMap<String, ArrayList<String>> getWordList() {
 		return wordList;
 	}
 
 
-	public void setWordList(HashMap<String, ArrayList<WordNode>> wordList) {
+	public void setWordList(HashMap<String, ArrayList<String>> wordList) {
 		this.wordList = wordList;
 	}
 
 	public void printHash() {
 		if (wordList != null) {
-			ArrayList<WordNode> temp;
-			Set<Map.Entry<String, ArrayList<WordNode>>> entries = wordList.entrySet();
-			for (Map.Entry<String, ArrayList<WordNode>> entry: entries) {
+			ArrayList<String> temp;
+			Set<Map.Entry<String, ArrayList<String>>> entries = wordList.entrySet();
+			for (Map.Entry<String, ArrayList<String>> entry: entries) {
 			    System.out.print(entry.getKey() + " " + "[ ");
 			    temp = entry.getValue();
-				    for (WordNode index: temp) {
-				    	System.out.print(index.getWord() + ", ");
+				    for (String index: temp) {
+				    	System.out.print(index + ", ");
 				    }
 				    System.out.print(" ]\n");
 			}
@@ -72,14 +72,14 @@ public class WordDictionary {
 			    	myNameChars[i] = '_';
 			    	String tempKey = String.valueOf(myNameChars);
 			    	if (wordList.containsKey(tempKey)) {
-			    		ArrayList<WordNode> existingNodeList = new ArrayList<WordNode>();
+			    		ArrayList<String> existingNodeList = new ArrayList<String>();
 			    		existingNodeList = wordList.get(tempKey);
-			    		existingNodeList.add(new WordNode(originalWord));
+			    		existingNodeList.add(originalWord);
 			    		wordList.put(tempKey, existingNodeList);
 			    	}
 			    	else {
-			    		ArrayList<WordNode> newodeList = new ArrayList<WordNode>();
-			    		newodeList.add(new WordNode(originalWord));
+			    		ArrayList<String> newodeList = new ArrayList<String>();
+			    		newodeList.add(originalWord);
 			    		wordList.put(tempKey, newodeList);
 			    	}
 			    	newWord = originalWord;
