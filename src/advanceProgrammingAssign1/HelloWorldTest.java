@@ -1,7 +1,7 @@
 /**
  * 
  */
-package master;
+package advanceProgrammingAssign1;
 
 import static org.junit.Assert.*;
 

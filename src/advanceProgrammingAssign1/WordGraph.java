@@ -1,5 +1,4 @@
-package master;
-
+package advanceProgrammingAssign1;
 
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -53,20 +52,26 @@ public class WordGraph {
 	}
 	
 	public void BFS(String start, String target) {
-	    GraphIterator<String, DefaultEdge> iterator = 
-	    		new BreadthFirstIterator<String, DefaultEdge>(graph, start);
-		
-		System.out.println();
-		while (iterator.hasNext()) {
-			String myword = iterator.next();
+		try {
+		    GraphIterator<String, DefaultEdge> iterator = 
+		    		new BreadthFirstIterator<String, DefaultEdge>(graph, start);
 			
-		  if (myword.compareTo(target) == 0) {
-		  	System.out.print("--> " + target);
-		  	break;
-		  }
-		  else {
-		  	System.out.print("-->" + myword);
-		  }
+			System.out.println();
+			System.out.print("START");
+			while (iterator.hasNext()) {
+				String myword = iterator.next();
+				
+			  if (myword.compareTo(target) == 0) {
+			  	System.out.print(" --> " + target + " FOUND!");
+			  	break;
+			  }
+			  else {
+			  	System.out.print(" --> " + myword);
+			  }
+			}
+		}
+		catch (IllegalArgumentException e) {
+			System.out.print("Specified word does not exist in the tree.");
 		}
 		
 	}

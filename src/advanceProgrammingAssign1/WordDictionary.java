@@ -1,4 +1,4 @@
-package master;
+package advanceProgrammingAssign1;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
