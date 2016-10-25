@@ -8,6 +8,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JFrame;
+
+import org.jgraph.JGraph;
+import org.jgrapht.UndirectedGraph;
+import org.jgrapht.ext.JGraphModelAdapter;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 
 import com.google.gson.*;
 
@@ -59,23 +66,38 @@ public class HelloWorld {
 		catch(FileNotFoundException e) {
 			
 		}
-		 // Get a set of the entries
-	      Set set = map.entrySet();
-	      
-	      // Get an iterator
-	      Iterator i = set.iterator();
-	      
-	      // Display elements
-	      while(i.hasNext()) {
-	         Map.Entry me = (Map.Entry)i.next();
-	         System.out.print(me.getKey() + ": ");
-	         System.out.println(me.getValue());
-	      }
+
+		UndirectedGraph<String, DefaultEdge> graph =
+			      new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
+		Iterator it = map.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry<String, ArrayList<String>> pair = (Map.Entry)it.next();
+
+	        ArrayList<String> words = pair.getValue();
+	        for (String word1: words) {
+	        	   for(String word2 : words) {
+	        	      if (word1.compareTo(word2) != 0){
+	        	    	  graph.addVertex(word1);
+	        	    	  graph.addVertex(word2);
+	        	    	  graph.addEdge(word1, word2);
+	        	      }
+	        	   }
+	        	
+	        	 }
+	        
+	       
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }
+		
 		System.out.print(count);
-		
-	
-		
-		
+
+		JGraph jgraph = new JGraph( new JGraphModelAdapter( graph ) );
+		JFrame frame = new JFrame();
+	    frame.getContentPane().add(jgraph);
+	    frame.setTitle("JGraphT Adapter to JGraph Demo");
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.pack();
+	    frame.setVisible(true);
 	}
 
 }
