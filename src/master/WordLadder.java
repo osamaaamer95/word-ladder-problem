@@ -2,18 +2,22 @@ package master;
 
 import java.util.Scanner;
 
-public class HelloWorld {
+public class WordLadder {
 
 	public static void main(String[] args) {
 		
 		// TODO Auto-generated method stub
-		System.out.println("Word Ladder Problem!");
+		System.out.println("Word Ladder Problem!\n");
 		
-		Scanner scanner = new Scanner(System.in); 
+		System.out.println("Parsing JSON into hashmap...");
 		
 		WordDictionary dict = new WordDictionary();
 		dict.populateDictionary("dictionary/testDictionary.json");
 		dict.printHash();
+		
+		System.out.println("Parsing complete!\n");
+		System.out.println("Ready to create graph...");
+		System.out.println("Creating graph...");
 		
 		
 		
@@ -46,6 +50,8 @@ public class HelloWorld {
 //	    System.out.println("Processing complete.\n");
 //		System.out.print(count + " entries parsed.\n");
 
+		Scanner scanner = new Scanner(System.in); 
+		
 //		JGraph jgraph = new JGraph( new JGraphModelAdapter( graph ) );
 //		JFrame frame = new JFrame();
 //	    frame.getContentPane().add(jgraph);

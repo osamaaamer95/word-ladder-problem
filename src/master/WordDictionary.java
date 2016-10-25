@@ -13,30 +13,37 @@ import com.google.gson.JsonParser;
 
 public class WordDictionary {
 
-	private HashMap<String, ArrayList<String>> wordList;
+	private HashMap<String, ArrayList<WordNode>> wordList;
 	private int wordCount = 0;
 	
 	public WordDictionary() {
 		// TODO Auto-generated constructor stub
-		wordList = new HashMap<String, ArrayList<String>>();
+		wordList = new HashMap<String, ArrayList<WordNode>>();
 	}
 
 
-	public HashMap<String, ArrayList<String>> getWordList() {
+	public HashMap<String, ArrayList<WordNode>> getWordList() {
 		return wordList;
 	}
 
 
-	public void setWordList(HashMap<String, ArrayList<String>> wordList) {
+	public void setWordList(HashMap<String, ArrayList<WordNode>> wordList) {
 		this.wordList = wordList;
 	}
 
 	public void printHash() {
 		if (wordList != null) {
-			Set<Map.Entry<String, ArrayList<String>>> entries = wordList.entrySet();
-			for (Map.Entry<String, ArrayList<String>> entry: entries) {
-			    System.out.println(entry.getKey() + " " + entry.getValue());
+			ArrayList<WordNode> temp;
+			Set<Map.Entry<String, ArrayList<WordNode>>> entries = wordList.entrySet();
+			for (Map.Entry<String, ArrayList<WordNode>> entry: entries) {
+			    System.out.print(entry.getKey() + " " + "[ ");
+			    temp = entry.getValue();
+				    for (WordNode index: temp) {
+				    	System.out.print(index.getWord() + ", ");
+				    }
+				    System.out.print(" ]\n");
 			}
+			
 		}
 		else {
 			 System.out.println("Word Dictionary does not exist.");
@@ -45,7 +52,7 @@ public class WordDictionary {
 	
 	public void populateDictionary(String filepath) {
 		
-		String word;
+		String newWord;
 		
 		try {
 			JsonParser parser = new JsonParser();
@@ -53,24 +60,29 @@ public class WordDictionary {
 			JsonObject obj = element.getAsJsonObject(); //since you know it's a JsonObject
 			Set<Map.Entry<String, JsonElement>> entries = obj.entrySet();//will return members of your object
 			for (Map.Entry<String, JsonElement> entry: entries) {
-			    word = entry.getKey();
-			    for(int i = 0; i < word.length(); i++) {
-			    	String originalWord = word;
-			    	char[] myNameChars = word.toCharArray();
+				
+				//read word into String
+			    newWord = entry.getKey();
+			    //iterate over word length
+			    for(int i = 0; i < newWord.length(); i++) {
+			    	//save original word
+			    	String originalWord = newWord;
+			    	// apply wildcard
+			    	char[] myNameChars = newWord.toCharArray();
 			    	myNameChars[i] = '_';
-			    	word = String.valueOf(myNameChars);
-			    	if (wordList.containsKey(word)) {
-			    		ArrayList<String> temp = new ArrayList<String>();
-			    		temp = wordList.get(word);
-			    		temp.add(originalWord);
-			    		wordList.put(word, temp);
+			    	String tempKey = String.valueOf(myNameChars);
+			    	if (wordList.containsKey(tempKey)) {
+			    		ArrayList<WordNode> existingNodeList = new ArrayList<WordNode>();
+			    		existingNodeList = wordList.get(tempKey);
+			    		existingNodeList.add(new WordNode(originalWord));
+			    		wordList.put(tempKey, existingNodeList);
 			    	}
 			    	else {
-			    		ArrayList<String> temp = new ArrayList<String>();
-			    		temp.add(originalWord);
-			    		wordList.put(word, temp);
+			    		ArrayList<WordNode> newodeList = new ArrayList<WordNode>();
+			    		newodeList.add(new WordNode(originalWord));
+			    		wordList.put(tempKey, newodeList);
 			    	}
-			    	word = originalWord;
+			    	newWord = originalWord;
 			    }
 			    setWordCount(getWordCount() + 1);
 			}
@@ -82,11 +94,9 @@ public class WordDictionary {
 	
 	}
 
-
 	public int getWordCount() {
 		return wordCount;
 	}
-
 
 	public void setWordCount(int wordCount) {
 		this.wordCount = wordCount;
