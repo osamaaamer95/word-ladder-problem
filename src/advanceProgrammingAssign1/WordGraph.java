@@ -20,10 +20,14 @@ public class WordGraph {
 	
 	// empty undirected graph structure
 	private static UndirectedGraph<String, DefaultEdge> graph;
+	private int numChains;
+	private int maxChainLength;
 		      
 	public WordGraph() {
 		// TODO Auto-generated constructor stub
 		graph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
+		numChains = 0;
+		maxChainLength = 0;
 	}
 
 	// parse hash map into undirected graph
@@ -80,7 +84,7 @@ public class WordGraph {
 	}
 	
 	// get shortest path between two words in tree
-	public static void getShortestPath(String sourceWord, String destinationWord) {
+	public static void BFSShortestPath(String sourceWord, String destinationWord) {
 		System.out.print("Path from " + sourceWord + " to " + destinationWord + ": ");
 		Boolean found = false;
 		
@@ -173,5 +177,21 @@ public class WordGraph {
 
 	public void setGraph(UndirectedGraph<String, DefaultEdge> graph) {
 		this.graph = graph;
+	}
+
+	public int getNumChains() {
+		return numChains;
+	}
+
+	public void setNumChains(int numChains) {
+		this.numChains = numChains;
+	}
+
+	public int getMaxChainLength() {
+		return maxChainLength;
+	}
+
+	public void setMaxChainLength(int maxChainLength) {
+		this.maxChainLength = maxChainLength;
 	}
 }
