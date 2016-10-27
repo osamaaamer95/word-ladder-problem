@@ -1,8 +1,14 @@
 package advanceProgrammingAssign1;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 import javax.swing.JFrame;
 
@@ -74,6 +80,61 @@ public class WordGraph {
 			System.out.print("Specified word does not exist in the tree.");
 		}
 		
+	}
+	
+	
+	public void getDirections(String sourceNode, String destinationNode) {
+		Map<String, Boolean> vis = new HashMap<String, Boolean>();
+
+		Map<String, String> prev = new HashMap<String, String>();
+		
+		List directions = new LinkedList<String>();
+		
+		Queue q = new LinkedList<String>();
+		
+		String current = null;
+//	    //find start node
+	    for(String index : graph.vertexSet()){
+	    	
+    	    if (index.compareTo(sourceNode) == 0){
+    	    	System.out.println("Starting Node Found: " + index);
+    	    	current = index;
+    	    }
+    	}
+	    
+	    q.add(current);
+	    
+	    vis.put(current, true);
+	    
+	    while(!q.isEmpty()){
+	        current = q.remove().toString();
+	        if (current.compareTo(destinationNode) == 0){
+	            break;
+	        }else{
+	        	String nextNode = null;
+	        	for(DefaultEdge e : graph.edgesOf(current)){
+	        		if (graph.getEdgeTarget(e).compareTo(current) == 0) {
+	        			nextNode = graph.getEdgeSource(e);
+	        		}
+	        		else {
+	        			nextNode = graph.getEdgeTarget(e);
+	        		}
+	            	if(!vis.containsKey(nextNode)){
+	                    q.add(nextNode);
+	                    vis.put(nextNode, true);
+	                    prev.put(nextNode, current);
+	                }
+	            }
+	        }
+	    }
+	    if (current.compareTo(destinationNode)!=0){
+	        System.out.println("can't reach destination");
+	    }
+	    for(String node = destinationNode; node != null; node = prev.get(node)) {
+	        directions.add(node);
+	    }
+	    System.out.println(directions.toString());
+
 	}
 	
 	public void displayGraph() {

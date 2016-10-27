@@ -30,14 +30,14 @@ public class WordLadder {
 	    System.out.println("Processing complete.\n");
 		System.out.print(dict.getWordCount() + " entries parsed.\n");
 
-		Scanner scanner = new Scanner(System.in); 
-		
-		System.out.println("Enter first word:");
-		String word1 = scanner.nextLine();
-		System.out.println("Enter second word:");
-		String word2 = scanner.nextLine();
+//		Scanner scanner = new Scanner(System.in); 
+//		
+//		System.out.println("Enter first word:");
+//		String word1 = scanner.nextLine();
+//		System.out.println("Enter second word:");
+//		String word2 = scanner.nextLine();
 
-		graph.BFS(word1, word2);
+		graph.getDirections("HOPE", "DUPE");
 
 	}
 
