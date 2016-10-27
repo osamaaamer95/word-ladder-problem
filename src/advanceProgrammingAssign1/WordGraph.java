@@ -3,6 +3,11 @@ package advanceProgrammingAssign1;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,12 +27,14 @@ public class WordGraph {
 	private static UndirectedGraph<String, DefaultEdge> graph;
 	private String maxChain;
 	private static ArrayList<String> unsolvedWords;
+	private static int chainLength;
 		      
 	public WordGraph() {
 		// TODO Auto-generated constructor stub
 		graph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
 		setMaxChain(null);
 		unsolvedWords = new ArrayList<String>();
+		chainLength = 0;
 	}
 
 	// parse hash map into undirected graph
@@ -56,9 +63,10 @@ public class WordGraph {
 	}
 	
 	// get shortest path between two words in tree
-	public static void BFSShortestPath(String sourceWord, String destinationWord) {
+	public static void BFSShortestPath(String sourceWord, String destinationWord) throws FileNotFoundException {
 		System.out.print("Path from " + sourceWord + " to " + destinationWord + ": ");
 		Boolean found = false;
+		PrintWriter writer = new PrintWriter("results.csv");
 		
 		// keep data structures for visited and previous words
 		Map<String, Boolean> visitedWords = new HashMap<String, Boolean>();
@@ -130,9 +138,24 @@ public class WordGraph {
 	    System.out.print("[END] <-- ");
 	    for (String path: shortestPath) {
 	    	System.out.print(path + " <-- ");
+	    	chainLength++;
 	    }
 	    System.out.print("[START]");
 	    //System.out.println("\nLength: " + maxChainLength);
+	    //writer.println("\n\"" + sourceWord + "->" + destinationWord + "\",\"" + chainLength + "\"");
+		
+		try
+		{
+		    String filename= "results.txt";
+		    FileWriter fw = new FileWriter(filename,true);
+		    fw.write("\"" + sourceWord + "->" + destinationWord + "\",\"" + chainLength + "\"\n");
+		    fw.close();
+		}
+		catch(IOException ioe)
+		{
+		    System.err.println("IOException: " + ioe.getMessage());
+		}
+		chainLength = 0;
 	}
 	
 	// helper function to display graph visually

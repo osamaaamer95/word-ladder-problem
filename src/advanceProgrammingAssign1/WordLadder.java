@@ -1,5 +1,10 @@
 package advanceProgrammingAssign1;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class WordLadder {
@@ -25,7 +30,8 @@ public class WordLadder {
 		}
 	}
 
-	public static void getAllPaths(WordDictionary dict, WordGraph graph) {
+	public static void getAllPaths(WordDictionary dict, WordGraph graph) throws FileNotFoundException {
+		
 		for (String wordA: dict.getWords()) {
 			for (String wordB: dict.getWords()) {
 				if (wordA != wordB && wordA.length() == wordB.length()) {
@@ -37,13 +43,13 @@ public class WordLadder {
 		System.out.println("\n\nWords without a chain: " + graph.getUnsolvedWords().toString());
 	}
 	
-	public static void getShortestPath(String word1, String word2) {
+	public static void getShortestPath(String word1, String word2) throws FileNotFoundException {
 		word1 = word1.toUpperCase();
 		word2 = word2.toUpperCase();
 		WordGraph.BFSShortestPath(word1, word2);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		Scanner scanner = new Scanner(System.in); 
 		// TODO Auto-generated method stub
 		System.out.println("Word Ladder Problem!\n");
@@ -69,6 +75,18 @@ public class WordLadder {
 
 	    System.out.println("\nProcessing complete.");
 		System.out.println(dict.getWordCount() + " entries parsed.\n");
+		
+		try
+		{
+		    String filename= "results.txt";
+		    FileWriter fw = new FileWriter(filename,false);
+		    fw.write("\"Ladder\",\"Chain Length\"\n");
+		    fw.close();
+		}
+		catch(IOException ioe)
+		{
+		    System.err.println("IOException: " + ioe.getMessage());
+		}
 		
 		while(true) {
 			System.out.println("\n1) Find shortest ladder between two words.");
