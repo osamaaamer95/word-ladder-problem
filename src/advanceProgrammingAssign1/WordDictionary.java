@@ -13,7 +13,9 @@ import com.google.gson.JsonParser;
 
 public class WordDictionary {
 
+	//create hashing map structure to store words
 	private HashMap<String, ArrayList<String>> wordList;
+	//count number of words added
 	private int wordCount = 0;
 	
 	public WordDictionary() {
@@ -21,35 +23,26 @@ public class WordDictionary {
 		wordList = new HashMap<String, ArrayList<String>>();
 	}
 
-
-	public HashMap<String, ArrayList<String>> getWordList() {
-		return wordList;
-	}
-
-
-	public void setWordList(HashMap<String, ArrayList<String>> wordList) {
-		this.wordList = wordList;
-	}
-
+	//helper function to print the map
 	public void printHash() {
 		if (wordList != null) {
 			ArrayList<String> temp;
 			Set<Map.Entry<String, ArrayList<String>>> entries = wordList.entrySet();
 			for (Map.Entry<String, ArrayList<String>> entry: entries) {
-			    System.out.print(entry.getKey() + " " + "[ ");
+			    System.out.print(entry.getKey() + " " + "[::");
 			    temp = entry.getValue();
 				    for (String index: temp) {
-				    	System.out.print(index + ", ");
+				    	System.out.print(" --> " + index);
 				    }
-				    System.out.print(" ]\n");
-			}
-			
+				    System.out.print("-->::]\n");
+			}			
 		}
 		else {
 			 System.out.println("Word Dictionary does not exist.");
 		}
 	}
-	
+
+	//parse JSON and fill hash map
 	public void populateDictionary(String filepath) {
 		
 		String newWord;
@@ -57,8 +50,8 @@ public class WordDictionary {
 		try {
 			JsonParser parser = new JsonParser();
 			JsonElement element = parser.parse(new FileReader(filepath));
-			JsonObject obj = element.getAsJsonObject(); //since you know it's a JsonObject
-			Set<Map.Entry<String, JsonElement>> entries = obj.entrySet();//will return members of your object
+			JsonObject obj = element.getAsJsonObject(); 
+			Set<Map.Entry<String, JsonElement>> entries = obj.entrySet();
 			for (Map.Entry<String, JsonElement> entry: entries) {
 				
 				//read word into String
@@ -67,16 +60,18 @@ public class WordDictionary {
 			    for(int i = 0; i < newWord.length(); i++) {
 			    	//save original word
 			    	String originalWord = newWord;
-			    	// apply wildcard
+			    	// apply wild card operation
 			    	char[] myNameChars = newWord.toCharArray();
 			    	myNameChars[i] = '_';
 			    	String tempKey = String.valueOf(myNameChars);
+			    	// if it exists in map append to existing word bucket list
 			    	if (wordList.containsKey(tempKey)) {
 			    		ArrayList<String> existingNodeList = new ArrayList<String>();
 			    		existingNodeList = wordList.get(tempKey);
 			    		existingNodeList.add(originalWord);
 			    		wordList.put(tempKey, existingNodeList);
 			    	}
+			    	// else make a new bucket
 			    	else {
 			    		ArrayList<String> newodeList = new ArrayList<String>();
 			    		newodeList.add(originalWord);
@@ -86,7 +81,6 @@ public class WordDictionary {
 			    }
 			    setWordCount(getWordCount() + 1);
 			}
-
 		}
 		catch(FileNotFoundException e) {
 			System.out.println("The specified file could not be found.");
@@ -100,6 +94,14 @@ public class WordDictionary {
 
 	public void setWordCount(int wordCount) {
 		this.wordCount = wordCount;
+	}
+	
+	public HashMap<String, ArrayList<String>> getWordList() {
+		return wordList;
+	}
+
+	public void setWordList(HashMap<String, ArrayList<String>> wordList) {
+		this.wordList = wordList;
 	}
 	
 }

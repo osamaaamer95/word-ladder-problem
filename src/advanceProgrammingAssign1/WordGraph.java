@@ -5,11 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
-
 import javax.swing.JFrame;
 
 import org.jgraph.JGraph;
@@ -20,6 +17,8 @@ import org.jgrapht.traverse.BreadthFirstIterator;
 import org.jgrapht.traverse.GraphIterator;
 
 public class WordGraph {
+	
+	// empty undirected graph structure
 	private UndirectedGraph<String, DefaultEdge> graph;
 		      
 	public WordGraph() {
@@ -27,19 +26,15 @@ public class WordGraph {
 		graph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
 	}
 
-	public UndirectedGraph<String, DefaultEdge> getGraph() {
-		return graph;
-	}
-
-	public void setGraph(UndirectedGraph<String, DefaultEdge> graph) {
-		this.graph = graph;
-	}
-	
+	// parse hash map into undirected graph
 	public void parseGraph(WordDictionary map) {
+		
+		// get hash map iterator
 		Iterator it = map.getWordList().entrySet().iterator();
 	    while (it.hasNext()) {
+	    	// get buckets
 	        Map.Entry<String, ArrayList<String>> pair = (Map.Entry)it.next();
-
+	        // loop to add an edge between those words that have one letter difference
 	        ArrayList<String> words = pair.getValue();
 	        for (String myword1: words) {
         	   for(String myword2 : words) {
@@ -49,21 +44,23 @@ public class WordGraph {
         	    	  graph.addVertex(myword2);
         	    	  graph.addEdge(myword1, myword2);
         	      }
-        	   }
-	        	
-	        }
-	        
-	        it.remove(); // avoids a ConcurrentModificationException
+        	   }        	
+	        }        
+        // avoids a ConcurrentModificationException
+        it.remove();
 	    }
 	}
 	
+	// traverse tree breadth first 
 	public void BFS(String start, String target) {
 		try {
+			// get JGraphT breadth first iterator
 		    GraphIterator<String, DefaultEdge> iterator = 
 		    		new BreadthFirstIterator<String, DefaultEdge>(graph, start);
 			
 			System.out.println();
 			System.out.print("START");
+			// print tree nodes breadth first 
 			while (iterator.hasNext()) {
 				String myword = iterator.next();
 				
@@ -82,61 +79,80 @@ public class WordGraph {
 		
 	}
 	
-	
-	public void getDirections(String sourceNode, String destinationNode) {
-		Map<String, Boolean> vis = new HashMap<String, Boolean>();
-
-		Map<String, String> prev = new HashMap<String, String>();
+	// get shortest path between two words in tree
+	public void getShortestPath(String sourceWord, String destinationWord) {
 		
-		List directions = new LinkedList<String>();
+		Boolean found = false;
 		
-		Queue q = new LinkedList<String>();
+		// keep data structures for visited and previous words
+		Map<String, Boolean> visitedWords = new HashMap<String, Boolean>();
+		Map<String, String> previousWord = new HashMap<String, String>();
 		
-		String current = null;
-//	    //find start node
+		// keep a linked list for shortest path
+		List shortestPath = new LinkedList<String>();
+		
+		// use a queue while traversing using BFS
+		Queue wordQueue = new LinkedList<String>();
+		
+		String currentWord = null;
+		
+	    //find start node in the graph
 	    for(String index : graph.vertexSet()){
-	    	
-    	    if (index.compareTo(sourceNode) == 0){
+    	    if (index.compareTo(sourceWord) == 0){
     	    	System.out.println("Starting Node Found: " + index);
-    	    	current = index;
+    	    	currentWord = index;
+    	    	found = true;
     	    }
     	}
 	    
-	    q.add(current);
+	    if (!found) {
+	    	System.out.println("The word was not found in the graph.");
+	    	return;
+	    }
 	    
-	    vis.put(current, true);
+	    // push currently viewed word in queue and mark visited
+	    wordQueue.add(currentWord);
+	    visitedWords.put(currentWord, true);
 	    
-	    while(!q.isEmpty()){
-	        current = q.remove().toString();
-	        if (current.compareTo(destinationNode) == 0){
+	    //
+	    while(!wordQueue.isEmpty()){
+	    	//pop queue and inspect
+	        currentWord = wordQueue.remove().toString();
+	        if (currentWord.compareTo(destinationWord) == 0){
 	            break;
-	        }else{
+	        } else {
 	        	String nextNode = null;
-	        	for(DefaultEdge e : graph.edgesOf(current)){
-	        		if (graph.getEdgeTarget(e).compareTo(current) == 0) {
+	        	// retrieve neighbors of current word
+	        	for(DefaultEdge e : graph.edgesOf(currentWord)){
+	        		if (graph.getEdgeTarget(e).compareTo(currentWord) == 0) {
 	        			nextNode = graph.getEdgeSource(e);
 	        		}
 	        		else {
 	        			nextNode = graph.getEdgeTarget(e);
 	        		}
-	            	if(!vis.containsKey(nextNode)){
-	                    q.add(nextNode);
-	                    vis.put(nextNode, true);
-	                    prev.put(nextNode, current);
+	        		// check if we have already visited it, if not add to queue and mark visited
+	            	if(!visitedWords.containsKey(nextNode)){
+	                    wordQueue.add(nextNode);
+	                    visitedWords.put(nextNode, true);
+	                    // save previous word to trace path later
+	                    previousWord.put(nextNode, currentWord);
 	                }
 	            }
 	        }
 	    }
-	    if (current.compareTo(destinationNode)!=0){
-	        System.out.println("can't reach destination");
+	    // check if we reached our destination
+	    if (currentWord.compareTo(destinationWord)!=0){
+	        System.out.println("Could'nt reach the destination word.");
 	    }
-	    for(String node = destinationNode; node != null; node = prev.get(node)) {
-	        directions.add(node);
+	    // retrieve list of previous nodes to trace path backwards
+	    for(String node = destinationWord; node != null; node = previousWord.get(node)) {
+	        shortestPath.add(node);
 	    }
-	    System.out.println(directions.toString());
-
+	    // print path from destination to source
+	    System.out.println(shortestPath.toString());
 	}
 	
+	// helper function to display graph visually
 	public void displayGraph() {
 		JGraph jgraph = new JGraph( new JGraphModelAdapter( graph ) );
 		JFrame frame = new JFrame();
@@ -147,4 +163,11 @@ public class WordGraph {
 	    frame.setVisible(true);
 	}
 	
+	public UndirectedGraph<String, DefaultEdge> getGraph() {
+		return graph;
+	}
+
+	public void setGraph(UndirectedGraph<String, DefaultEdge> graph) {
+		this.graph = graph;
+	}
 }
