@@ -3,7 +3,6 @@ package advanceProgrammingAssign1;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,8 +17,6 @@ import org.jgraph.JGraph;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.*;
-import org.jgrapht.traverse.BreadthFirstIterator;
-import org.jgrapht.traverse.GraphIterator;
 
 public class WordGraph {
 	
