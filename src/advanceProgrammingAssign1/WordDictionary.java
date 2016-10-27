@@ -3,6 +3,7 @@ package advanceProgrammingAssign1;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +14,8 @@ import com.google.gson.JsonParser;
 
 public class WordDictionary {
 
+	//create simple list to store words
+	private ArrayList<String> words;
 	//create hashing map structure to store words
 	private HashMap<String, ArrayList<String>> wordList;
 	//count number of words added
@@ -21,6 +24,7 @@ public class WordDictionary {
 	public WordDictionary() {
 		// TODO Auto-generated constructor stub
 		wordList = new HashMap<String, ArrayList<String>>();
+		words = new ArrayList<String>();
 	}
 
 	//helper function to print the map
@@ -56,6 +60,7 @@ public class WordDictionary {
 				
 				//read word into String
 			    newWord = entry.getKey();
+			    words.add(newWord);
 			    //iterate over word length
 			    for(int i = 0; i < newWord.length(); i++) {
 			    	//save original word
@@ -88,6 +93,7 @@ public class WordDictionary {
 	
 	}
 
+	
 	public int getWordCount() {
 		return wordCount;
 	}
@@ -102,6 +108,14 @@ public class WordDictionary {
 
 	public void setWordList(HashMap<String, ArrayList<String>> wordList) {
 		this.wordList = wordList;
+	}
+
+	public ArrayList<String> getWords() {
+		return words;
+	}
+
+	public void setWords(ArrayList<String> words) {
+		this.words = words;
 	}
 	
 }

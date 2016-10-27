@@ -3,6 +3,18 @@ package advanceProgrammingAssign1;
 import java.util.Scanner;
 
 public class WordLadder {
+	
+	
+	public static void getAllPaths(WordDictionary dict) {
+		for (String wordA: dict.getWords()) {
+			for (String wordB: dict.getWords()) {
+				if (wordA != wordB && wordA.length() == wordB.length()) {
+					System.out.print("Path from " + wordA + " to " + wordB + "(in reverse): \n");
+					WordGraph.getShortestPath(wordA.toUpperCase(), wordB.toUpperCase());
+				}	
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		
@@ -16,7 +28,7 @@ public class WordLadder {
 		WordGraph graph = new WordGraph();
 		
 		// parse JSON dictionary into has map
-		dict.populateDictionary("dictionary/dictionary.json");
+		dict.populateDictionary("dictionary/testDictionary.json");
 		
 		// uncomment to print the hash map
 		//dict.printHash();
@@ -50,7 +62,11 @@ public class WordLadder {
 		word1 = word1.toUpperCase();
 		word2 = word2.toUpperCase();
 		
-		graph.getShortestPath(word1, word2);
+		// get shortest word ladder
+		WordGraph.getShortestPath(word1, word2);
+		
+		// get shortest paths between all words in dict
+		getAllPaths(dict);
 
 	}
 

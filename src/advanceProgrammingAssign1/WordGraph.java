@@ -19,7 +19,7 @@ import org.jgrapht.traverse.GraphIterator;
 public class WordGraph {
 	
 	// empty undirected graph structure
-	private UndirectedGraph<String, DefaultEdge> graph;
+	private static UndirectedGraph<String, DefaultEdge> graph;
 		      
 	public WordGraph() {
 		// TODO Auto-generated constructor stub
@@ -80,8 +80,8 @@ public class WordGraph {
 	}
 	
 	// get shortest path between two words in tree
-	public void getShortestPath(String sourceWord, String destinationWord) {
-		
+	public static void getShortestPath(String sourceWord, String destinationWord) {
+		System.out.print("Path from " + sourceWord + " to " + destinationWord + ": ");
 		Boolean found = false;
 		
 		// keep data structures for visited and previous words
@@ -89,7 +89,7 @@ public class WordGraph {
 		Map<String, String> previousWord = new HashMap<String, String>();
 		
 		// keep a linked list for shortest path
-		List shortestPath = new LinkedList<String>();
+		List<String> shortestPath = new LinkedList<String>();
 		
 		// use a queue while traversing using BFS
 		Queue wordQueue = new LinkedList<String>();
@@ -99,14 +99,14 @@ public class WordGraph {
 	    //find start node in the graph
 	    for(String index : graph.vertexSet()){
     	    if (index.compareTo(sourceWord) == 0){
-    	    	System.out.println("Starting Node Found: " + index);
+    	    	//System.out.println("Starting Node Found: " + index);
     	    	currentWord = index;
     	    	found = true;
     	    }
     	}
 	    
 	    if (!found) {
-	    	System.out.println("The word was not found in the graph.");
+	    	System.out.println("The starting word was not found in the graph.");
 	    	return;
 	    }
 	    
@@ -142,14 +142,18 @@ public class WordGraph {
 	    }
 	    // check if we reached our destination
 	    if (currentWord.compareTo(destinationWord)!=0){
-	        System.out.println("Could'nt reach the destination word.");
+	        System.out.println("Couldn't reach the destination word.");
 	    }
 	    // retrieve list of previous nodes to trace path backwards
 	    for(String node = destinationWord; node != null; node = previousWord.get(node)) {
 	        shortestPath.add(node);
 	    }
 	    // print path from destination to source
-	    System.out.println(shortestPath.toString());
+	    System.out.print("[END] <-- ");
+	    for (String path: shortestPath) {
+	    	System.out.print(path + " <-- ");
+	    }
+	    System.out.print("[START]\n");
 	}
 	
 	// helper function to display graph visually
