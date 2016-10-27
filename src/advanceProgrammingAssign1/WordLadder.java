@@ -23,7 +23,7 @@ public class WordLadder {
 		}
 	}
 
-	public static void getAllPaths(WordDictionary dict) {
+	public static void getAllPaths(WordDictionary dict, WordGraph graph) {
 		for (String wordA: dict.getWords()) {
 			for (String wordB: dict.getWords()) {
 				if (wordA != wordB && wordA.length() == wordB.length()) {
@@ -32,6 +32,7 @@ public class WordLadder {
 				}	
 			}
 		}
+		System.out.println("\n\nWords without a chain: " + graph.getUnsolvedWords().toString());
 	}
 	
 	public static void getShortestPath(String word1, String word2) {
@@ -44,8 +45,6 @@ public class WordLadder {
 		Scanner scanner = new Scanner(System.in); 
 		// TODO Auto-generated method stub
 		System.out.println("Word Ladder Problem!\n");
-
-	
 		System.out.println("Parsing JSON into hashmap...");
 		
 		WordDictionary dict = new WordDictionary();
@@ -55,7 +54,7 @@ public class WordLadder {
 		dict.populateDictionary("dictionary/testDictionary.json");
 		
 		// uncomment to print the hash map
-		//dict.printHash();
+		dict.printHash();
 		
 		System.out.println("Parsing complete!\n");
 		System.out.println("Ready to create graph...");
@@ -86,7 +85,7 @@ public class WordLadder {
 			   case "2" :
 			      // Statements
 					// get shortest paths between all words in dict
-					getAllPaths(dict);
+					getAllPaths(dict, graph);
 			      break; 
 			   
 			   case "3" :
@@ -98,7 +97,6 @@ public class WordLadder {
 				   System.out.println("\nYou entered an invalid value.\n");
 			}
 		}
-
 	}
 
 }

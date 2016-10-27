@@ -20,14 +20,14 @@ public class WordGraph {
 	
 	// empty undirected graph structure
 	private static UndirectedGraph<String, DefaultEdge> graph;
-	private int numChains;
-	private int maxChainLength;
+	private String maxChain;
+	private static ArrayList<String> unsolvedWords;
 		      
 	public WordGraph() {
 		// TODO Auto-generated constructor stub
 		graph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
-		numChains = 0;
-		maxChainLength = 0;
+		setMaxChain(null);
+		unsolvedWords = new ArrayList<String>();
 	}
 
 	// parse hash map into undirected graph
@@ -147,6 +147,8 @@ public class WordGraph {
 	    // check if we reached our destination
 	    if (currentWord.compareTo(destinationWord)!=0){
 	        System.out.println("Couldn't reach the destination word.");
+	        unsolvedWords.add(sourceWord);
+	        return;
 	    }
 	    // retrieve list of previous nodes to trace path backwards
 	    for(String node = destinationWord; node != null; node = previousWord.get(node)) {
@@ -157,7 +159,8 @@ public class WordGraph {
 	    for (String path: shortestPath) {
 	    	System.out.print(path + " <-- ");
 	    }
-	    System.out.print("[START]\n");
+	    System.out.print("[START]");
+	    //System.out.println("\nLength: " + maxChainLength);
 	}
 	
 	// helper function to display graph visually
@@ -175,23 +178,16 @@ public class WordGraph {
 		return graph;
 	}
 
-	public void setGraph(UndirectedGraph<String, DefaultEdge> graph) {
-		this.graph = graph;
+	public String getMaxChain() {
+		return maxChain;
 	}
 
-	public int getNumChains() {
-		return numChains;
+	public void setMaxChain(String maxChain) {
+		this.maxChain = maxChain;
 	}
 
-	public void setNumChains(int numChains) {
-		this.numChains = numChains;
+	public ArrayList<String> getUnsolvedWords() {
+		return unsolvedWords;
 	}
 
-	public int getMaxChainLength() {
-		return maxChainLength;
-	}
-
-	public void setMaxChainLength(int maxChainLength) {
-		this.maxChainLength = maxChainLength;
-	}
 }
