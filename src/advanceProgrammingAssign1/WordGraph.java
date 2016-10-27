@@ -55,34 +55,6 @@ public class WordGraph {
 	    }
 	}
 	
-	// traverse tree breadth first 
-	public void BFS(String start, String target) {
-		try {
-			// get JGraphT breadth first iterator
-		    GraphIterator<String, DefaultEdge> iterator = 
-		    		new BreadthFirstIterator<String, DefaultEdge>(graph, start);
-			
-			System.out.println();
-			System.out.print("START");
-			// print tree nodes breadth first 
-			while (iterator.hasNext()) {
-				String myword = iterator.next();
-				
-			  if (myword.compareTo(target) == 0) {
-			  	System.out.print(" --> " + target + " FOUND!");
-			  	break;
-			  }
-			  else {
-			  	System.out.print(" --> " + myword);
-			  }
-			}
-		}
-		catch (IllegalArgumentException e) {
-			System.out.print("Specified word does not exist in the tree.");
-		}
-		
-	}
-	
 	// get shortest path between two words in tree
 	public static void BFSShortestPath(String sourceWord, String destinationWord) {
 		System.out.print("Path from " + sourceWord + " to " + destinationWord + ": ");
@@ -96,7 +68,7 @@ public class WordGraph {
 		List<String> shortestPath = new LinkedList<String>();
 		
 		// use a queue while traversing using BFS
-		Queue wordQueue = new LinkedList<String>();
+		Queue<String> wordQueue = new LinkedList<String>();
 		
 		String currentWord = null;
 		

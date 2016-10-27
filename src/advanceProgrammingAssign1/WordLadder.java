@@ -4,9 +4,11 @@ import java.util.Scanner;
 
 public class WordLadder {
 	
+	//store words entered by user
 	private static String word1;
 	private static String word2;
 	
+	//function to get user input
 	public static void getUserInput() {
 		Scanner scanner = new Scanner(System.in); 
 		System.out.println("Enter first word:");
@@ -52,6 +54,7 @@ public class WordLadder {
 		
 		// parse JSON dictionary into has map
 		dict.populateDictionary("dictionary/testDictionary.json");
+		//dict.populateDictionary("dictionary/dictionary.json");
 		
 		// uncomment to print the hash map
 		dict.printHash();
@@ -75,7 +78,6 @@ public class WordLadder {
 			String choice = scanner.nextLine();
 			switch(choice) {
 			   case "1" :
-			      // Statements
 					// get two words from user
 					getUserInput();
 					// get shortest word ladder
@@ -83,20 +85,16 @@ public class WordLadder {
 			      break; 
 			   
 			   case "2" :
-			      // Statements
 					// get shortest paths between all words in dict
 					getAllPaths(dict, graph);
 			      break; 
 			   
 			   case "3" :
-				      // Statements
 				      return; // exit
 				     
-			   default : // Optional
-			      // Statements
+			   default : 
 				   System.out.println("\nYou entered an invalid value.\n");
 			}
 		}
 	}
-
 }
